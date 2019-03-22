@@ -15,6 +15,15 @@
 
 #include "libft/includes/libft.h"
 
+typedef struct  s_point
+{
+	int 		x;
+	int 		y;
+	int 		off_x;
+	int 		off_y;
+	int			score;	
+}				t_point;
+
 typedef struct	s_map
 {
 	int			cols;
@@ -28,6 +37,7 @@ typedef struct	s_filler
 	char		enemy;
 	t_map		*map;
 	t_map		*piece;
+	t_point		*point;
 }				t_filler;
 
 int				init_data(t_filler *data, char *line);

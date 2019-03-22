@@ -18,6 +18,7 @@ int		init_data(t_filler *data, char *info)
 
 	data->map = (t_map *)malloc(sizeof(t_map));
 	data->piece = (t_map *)malloc(sizeof(t_map));
+	data->point = (t_map *)malloc(sizeof(t_point));
 	if (!info || !data->map || !data->piece ||
 		(!(res = ft_strstr(line, "p1")) && !ft_strstr(line, "p2")))
 		return (0);
@@ -29,5 +30,10 @@ int		init_data(t_filler *data, char *info)
 	data->map->rows = 0;
 	data->piece->cols = 0;
 	data->piece->rows = 0;
+	data->point->x = 0;
+	data->point->y = 0;
+	data->point->off_x = 0;
+	data->point->off_y = 0;
+	data->point->score = 0;
 	return (1);
 }
