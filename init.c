@@ -6,7 +6,7 @@
 /*   By: rmalyavc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 20:57:53 by rmalyavc          #+#    #+#             */
-/*   Updated: 2019/03/16 17:21:31 by rmalyavc         ###   ########.fr       */
+/*   Updated: 2019/03/30 18:22:27 by rmalyavc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int		init_data(t_filler *data, char *info)
 
 	data->map = (t_map *)malloc(sizeof(t_map));
 	data->piece = (t_map *)malloc(sizeof(t_map));
-	data->point = (t_map *)malloc(sizeof(t_point));
+	data->point = (t_point *)malloc(sizeof(t_point));
 	if (!info || !data->map || !data->piece ||
-		(!(res = ft_strstr(line, "p1")) && !ft_strstr(line, "p2")))
+		(!(res = ft_strstr(info, "p1")) && !ft_strstr(info, "p2")))
 		return (0);
 	data->my = res ? 'O' : 'X';
 	data->enemy = data->my == 'O' ? 'X' : 'O';

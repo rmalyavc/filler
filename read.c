@@ -6,7 +6,7 @@
 /*   By: rmalyavc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/16 16:32:05 by rmalyavc          #+#    #+#             */
-/*   Updated: 2019/03/16 21:50:59 by rmalyavc         ###   ########.fr       */
+/*   Updated: 2019/03/30 17:28:13 by rmalyavc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static t_list	*map_list(t_list *lst, int size)
 {
-	t_list		*node;
 	char		*line;
 	char		*ptr;
 
@@ -35,7 +34,6 @@ static t_list	*map_list(t_list *lst, int size)
 
 static t_list	*piece_list(t_list *lst, int size)
 {
-	t_list		*node;
 	char		*line;
 
 	line = NULL;
@@ -49,7 +47,7 @@ static t_list	*piece_list(t_list *lst, int size)
 	return (lst);
 }
 
-static int		read_map(t_map **data, int (*get_list)(t_list *, int))
+static int		read_map(t_map **data, t_list *(*get_list)(t_list *, int))
 {
 	char		*str;
 	char		**parsed;
@@ -57,7 +55,7 @@ static int		read_map(t_map **data, int (*get_list)(t_list *, int))
 	t_list		*lst;
 
 	res = get_next_line(0, &str);
-	if (res < 1 || !(parsed = ft_strsplit(str)) ||
+	if (res < 1 || !(parsed = ft_strsplit(str, ' ')) ||
 		(ft_count_strings(parsed) < 3 && ft_clean_buff(parsed, &parsed)))
 		return (0);
 	(*data)->rows = ft_atoi(parsed[1]);

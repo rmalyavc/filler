@@ -6,14 +6,14 @@
 /*   By: rmalyavc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 20:06:44 by rmalyavc          #+#    #+#             */
-/*   Updated: 2019/03/16 21:32:20 by rmalyavc         ###   ########.fr       */
+/*   Updated: 2019/03/30 18:25:47 by rmalyavc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
 
-#include "libft/includes/libft.h"
+# include "libft.h"
 
 typedef struct  s_point
 {
@@ -21,7 +21,7 @@ typedef struct  s_point
 	int 		y;
 	int 		off_x;
 	int 		off_y;
-	int			score;	
+	int			score;
 }				t_point;
 
 typedef struct	s_map
@@ -41,7 +41,8 @@ typedef struct	s_filler
 }				t_filler;
 
 int				init_data(t_filler *data, char *line);
-void			start_game(t_filler *data);
+//void			start_game(t_filler *data);
 int				get_data(t_filler *data);
+void			paste_figure(t_filler *data);
 
 #endif
