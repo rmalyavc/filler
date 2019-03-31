@@ -28,6 +28,13 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct		s_gnllst
+{
+	char			*flow;
+	int				rd;
+	int				fd;
+}					t_gnllst;
+
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
 int					ft_isalnum(int c);
@@ -126,5 +133,6 @@ int					open_file(char *file);
 t_list				*file_to_lst(int fd);
 char				**ft_lst_to_buff(t_list **lst, int clean);
 int					ft_strchr_arr(char *haystack, char *needles);
+char				*ft_strconcat(char *a, char *b);
 
 #endif

@@ -35,13 +35,16 @@ static t_list	*map_list(t_list *lst, int size)
 static t_list	*piece_list(t_list *lst, int size)
 {
 	char		*line;
-
+// int fd = open("test1", O_WRONLY | O_APPEND);
 	line = NULL;
 	while (size-- > 0)
 	{
-		if (get_next_line(0, &line) < 1 || !line || !ft_strchr_arr(line, ".*"))
+		// ft_printf("{_fd_}SIZE = %d\n", fd, size);
+		if (get_next_line(0, &line) < 1 || !line)
 			return (NULL);
+		// ft_printf("{_fd_}GNL\n", fd);
 		ft_lstpush(&lst, ft_lstnew(line, ft_strlen(line)));
+		// ft_printf("{_fd_}LSTPUSH\n", fd);
 		ft_strdel(&line);
 	}
 	return (lst);
@@ -70,6 +73,12 @@ static int		read_map(t_map **data, t_list *(*get_list)(t_list *, int))
 
 int				get_data(t_filler *data)
 {
-	return (read_map(&(data->map), &map_list) &&
-			read_map(&(data->piece), &piece_list));
+	// int fd = open("test1", O_WRONLY | O_APPEND);
+	int read_map_res = read_map(&(data->map), &map_list);
+	// ft_printf("{_fd_}After MAP\n", fd);
+	int read_piece_res = read_map(&(data->piece), &piece_list);
+	// ft_printf("{_fd_}After PIECE\n", fd);
+	return (read_map_res && read_piece_res);
+	// return (read_map(&(data->map), &map_list) &&
+			// read_map(&(data->piece), &piece_list));
 }
