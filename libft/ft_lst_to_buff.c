@@ -18,7 +18,7 @@ char	**ft_lst_to_buff(t_list **lst, int clean)
 	char	**buff;
 	int		size;
 	int		i;
-	
+
 	if (!lst || !(*lst) || !(size = ft_lstlen(*lst)))
 		return (NULL);
 	ptr = *lst;
@@ -27,7 +27,8 @@ char	**ft_lst_to_buff(t_list **lst, int clean)
 		return (NULL);
 	while (ptr)
 	{
-		if (!(buff[++i] = ft_strdup(ptr->content)) && ft_clean_buff(buff, &buff))
+		if (!(buff[++i] = ft_strdup(ptr->content)) &&
+			ft_clean_buff(buff, &buff))
 			return (NULL);
 		ptr = ptr->next;
 	}

@@ -12,15 +12,14 @@
 
 #ifndef FILLER_H
 # define FILLER_H
-
 # include "libft.h"
 
-typedef struct  s_point
+typedef struct	s_point
 {
-	int 		x;
-	int 		y;
-	int 		off_x;
-	int 		off_y;
+	int			x;
+	int			y;
+	int			off_x;
+	int			off_y;
 	int			score;
 }				t_point;
 
@@ -41,8 +40,8 @@ typedef struct	s_filler
 }				t_filler;
 
 int				init_data(t_filler *data, char *line);
-//void			start_game(t_filler *data);
 int				get_data(t_filler *data);
 void			paste_figure(t_filler *data);
+void			make_upper(t_filler *data);
 
 #endif

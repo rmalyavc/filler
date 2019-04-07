@@ -89,13 +89,11 @@ static int		file_to_str(const int fd, t_list **lst, char **line)
 	int		res;
 	char	buffer[BUFF_SIZE + 1];
 	char	*ptr;
-// int fd_test = open("test1", O_WRONLY | O_APPEND);
 
 	ft_bzero(buffer, BUFF_SIZE + 1);
 	curr = search_elem(fd, lst);
 	while ((res = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
-		// ft_printf("{_fd_}gnl_res = %d\n", fd_test, res);
 		ptr = curr->content;
 		curr->content = ft_realloc(&ptr, 0);
 		ft_strcat(curr->content, buffer);
@@ -103,7 +101,6 @@ static int		file_to_str(const int fd, t_list **lst, char **line)
 			break ;
 		ft_bzero(buffer, BUFF_SIZE + 1);
 	}
-	// ft_printf("{_fd_}after gnl_read\n\n", fd_test);
 	if (res == -1)
 		return (-1);
 	if (read_buff(&curr, line) == 1)

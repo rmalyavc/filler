@@ -13,27 +13,6 @@
 #include "filler.h"
 #include <time.h>
 
-void    print_map_piece(t_filler *data) {
-	int fd = open("test1", O_WRONLY | O_APPEND);
-	int i = -1;
-
-	ft_printf("{_fd_}Map Rows = %d\nMap Cols = %d\n", fd, data->map->rows, data->map->cols);
-	while (++i < data->map->rows)
-		ft_printf("{_fd_}%s\n", fd, data->map->map[i]);
-	ft_printf("{_fd_} \nPiece Rows = %d\nPiece Cols = %d\n", fd, data->piece->rows, data->piece->cols);
-	i = -1;
-	while (++i < data->piece->rows)
-		ft_printf("{_fd_}%s\n", fd, data->piece->map[i]);
-}
-
-void	print_piece(char **piece) {
-	int fd = open("test1", O_WRONLY | O_APPEND);
-	int i = -1;
-
-	while (++i < ft_count_strings(piece))
-		ft_printf("{_fd_}%s\n", fd, piece[i]);
-}
-
 static int		need_offset_x(char **piece, int size)
 {
 	while (--size >= 0)
@@ -47,7 +26,8 @@ static char		**cut_spare(char **piece, int size, int *off_x, int *off_y)
 	int			i;
 
 	i = -1;
-	while (++i < size && !ft_strchr(piece[i - *off_y], '*')) {
+	while (++i < size && !ft_strchr(piece[i - *off_y], '*'))
+	{
 		piece += 1;
 		*off_y += 1;
 	}
@@ -60,52 +40,58 @@ static char		**cut_spare(char **piece, int size, int *off_x, int *off_y)
 	return (piece);
 }
 
-static int		is_better(t_filler *data, int x, int y)
+static int		is_better(t_filler *data, int x, int y, char *ptr)
 {
 	int			i;
+	char		c;
 	t_point		tmp;
-int fd = open("test1", O_WRONLY | O_APPEND);
+
 	i = -1;
 	tmp.x = -1;
 	tmp.y = -1;
+	c = ft_tolower(data->enemy);
 	while (++i < data->map->rows)
-	{
-		// if (ft_strchr(data->map->map[i], data->enemy) && ((tmp.y = i) || 1))
-		// 	tmp.x = ft_strchr_n(data->map->map[i], data->enemy);
-		if (ft_strchr(data->map->map[i], ft_tolower(data->enemy)))
+		if ((ptr = ft_strchr(data->map->map[i], c)))
 		{
 			tmp.y = i;
-			tmp.x = ft_strchr_n(data->map->map[i], ft_tolower(data->enemy));
+			tmp.x = x >= ptr - data->map->map[i] ? ft_strrchr(data->map->map[i],
+			c) - data->map->map[i] : ptr - data->map->map[i];
 			break ;
 		}
-	}
-	return (ft_abs((x * x + y * y) - (tmp.x * tmp.x - tmp.y * tmp.y)) >
-	ft_abs((data->point->x * data->point->x + data->point->y * data->point->y) - (tmp.x * tmp.x - tmp.y * tmp.y)));
-}	
+		else if (ft_strchr(data->map->map[i], data->enemy) && (tmp.y = i))
+			tmp.x = ft_strchr_n(data->map->map[i], data->enemy);
+	tmp.x += tmp.x <= x ? -3 : 3;
+	tmp.y += tmp.y <= y ? -3 : 3;
+	return ((ft_abs(x - tmp.x) * ft_abs(x - tmp.x)) + (ft_abs(y - tmp.y) *
+			ft_abs(y - tmp.y)) < (ft_abs(data->point->x - tmp.x) *
+			ft_abs(data->point->x - tmp.x)) + (ft_abs(data->point->y - tmp.y) *
+			ft_abs(data->point->y - tmp.y)));
+}
 
 static int		try_paste(t_filler *data, char **piece, int x, int y)
 {
 	int			i;
 	int			j;
-	int			intersection;
-// int fd = open("test1", O_WRONLY | O_APPEND);
+	int			intersect;
+
 	i = -1;
-	intersection = 0;
-// ft_printf("{_fd_}X = %d Y = %d\n", fd, x, y);
+	intersect = 0;
 	while (++i < data->piece->rows - data->point->off_y && (j = -1))
 		while (++j < data->piece->cols - data->point->off_x)
 		{
-// ft_printf("{_fd_}J = %d I = %d\n", fd, j, i);
 			if (piece[i][j] == '.')
 				continue ;
 			else if (y + i >= data->map->rows || x + j >= data->map->cols ||
-				(piece[i][j] == '*' && ft_toupper(data->map->map[y + i][x + j]) == data->enemy) ||
-				(piece[i][j] == '*' && ft_toupper(data->map->map[y + i][x + j]) == data->my && intersection))
+			(piece[i][j] == '*' &&
+			ft_toupper(data->map->map[y + i][x + j]) == data->enemy) ||
+			(piece[i][j] == '*' &&
+			ft_toupper(data->map->map[y + i][x + j]) == data->my && intersect))
 				return (0);
-			else if (piece[i][j] == '*' && ft_toupper(data->map->map[y + i][x + j]) == data->my)
-				intersection++;
+			else if (piece[i][j] == '*' &&
+				ft_toupper(data->map->map[y + i][x + j]) == data->my)
+				intersect++;
 		}
-	return (intersection);
+	return (intersect);
 }
 
 void			paste_figure(t_filler *data)
@@ -113,31 +99,23 @@ void			paste_figure(t_filler *data)
 	int			i;
 	int			j;
 	char		**piece;
-int fd = open("test1", O_WRONLY | O_APPEND);
-	i = -1;
 
+	i = -1;
 	data->point->off_x = 0;
 	data->point->off_y = 0;
 	data->point->x = 0;
 	data->point->y = 0;
-print_map_piece(data);
-	piece = cut_spare(data->piece->map, data->map->rows, &(data->point->off_x), &(data->point->off_y));
-ft_printf("{_fd_}After cut_spare\n\n", fd);
-print_piece(piece);
-	
+	piece = cut_spare(data->piece->map, data->map->rows,
+			&(data->point->off_x), &(data->point->off_y));
 	while (++i < data->map->rows && (j = -1))
-		while (++j < data->map->cols) {	
-			if (try_paste(data, piece, j, i) && ((!data->point->x && !data->point->y) || is_better(data, j, i)))
+		while (++j < data->map->cols)
+			if (try_paste(data, piece, j, i) &&
+			((!data->point->x && !data->point->y) || is_better(data, j, i, 0)))
 			{
 				data->point->x = j;
 				data->point->y = i;
 			}
-		}
-
-ft_printf("{_fd_}%d %d\n", fd, data->point->y - data->point->off_y, data->point->x - data->point->off_x);
-	ft_printf("%d %d\n", data->point->y - data->point->off_y, data->point->x - data->point->off_x);
-	// ft_putnbr(data->point->y - data->point->off_y);
-	// ft_putchar(' ');
-	// ft_putnbr(data->point->x - data->point->off_x);
-	// ft_putchar('\n');
+	make_upper(data);
+	ft_printf("%d %d\n", data->point->y - data->point->off_y,
+			data->point->x - data->point->off_x);
 }
